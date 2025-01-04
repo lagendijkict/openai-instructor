@@ -1,12 +1,15 @@
+from dotenv import load_dotenv
+
 from enum import Enum
 import json
-
+import os
 import requests
 from bs4 import BeautifulSoup
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-client = OpenAI()
+load_dotenv
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 MODEL = "gpt-4o-2024-08-06"
 
 

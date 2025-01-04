@@ -2,6 +2,8 @@
 
 This repository provides an in-depth tutorial on using the OpenAI library with Python. It covers everything you need to know to get started with the OpenAI API and build powerful applications using state-of-the-art language models like GPT-3.5 Turbo and GPT-4.
 
+Link to Youtube video: https://www.youtube.com/watch?v=zt1zCwLrSPg
+
 ## Table of Contents
 
 - [OpenAI Python Library Tutorial](#openai-python-library-tutorial)

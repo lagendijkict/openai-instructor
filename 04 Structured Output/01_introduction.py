@@ -1,7 +1,10 @@
+from dotenv import load_dotenv
 from openai import OpenAI
 import json
+import os
 
-client = OpenAI()
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def send_reply(message: str):
@@ -12,26 +15,26 @@ def send_reply(message: str):
 # Unstructured output example
 # --------------------------------------------------------------
 
-query = "Hi there, I have a question about my bill. Can you help me?"
+# query = "Hi there, I have a question about my bill. Can you help me?"
 
-messages = [
-    {"role": "system", "content": "You're a helpful customer care assistant"},
-    {
-        "role": "user",
-        "content": query,
-    },
-]
+# messages = [
+#     {"role": "system", "content": "You're a helpful customer care assistant"},
+#     {
+#         "role": "user",
+#         "content": query,
+#     },
+# ]
 
-response = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=messages,
-    response_format={"type": "text"},
-)
+# response = client.chat.completions.create(
+#     model="gpt-3.5-turbo",
+#     messages=messages,
+#     response_format={"type": "text"},
+# )
 
-message = response.choices[0].message.content
-type(message)  # str
+# message = response.choices[0].message.content
+# type(message)  # str
 
-send_reply(message)
+# send_reply(message)
 
 
 # --------------------------------------------------------------
@@ -45,7 +48,7 @@ messages = [
         "role": "system",
         "content": """
         You're a helpful customer care assistant that can classify incoming messages and create a response.
-        Always response in the following JSON format: {"content": <response>, "category": <classification>}
+        Always respond in the following JSON format: {"content": <response>, "category": <classification>}
         Available categories: 'general', 'order', 'billing'
         """,
     },
@@ -62,6 +65,7 @@ response = client.chat.completions.create(
 )
 
 message = response.choices[0].message.content
+print(message)
 type(message)  # str
 
 message_dict = json.loads(message)

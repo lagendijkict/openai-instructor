@@ -1,8 +1,13 @@
+from dotenv import load_dotenv
 from openai import OpenAI
 
 import json
+import os
 
-client = OpenAI()
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# JSON mode helps preserve JSON more, but not the exact structure.
 
 
 def send_reply(message: str):
@@ -40,7 +45,8 @@ message = response.choices[0].message.content
 type(message)
 
 message_json = json.loads(message)
-type(message_json)
+print(f"Example 1: {type(message_json)}")
+print(f"Example 1: {message_json}")
 
 send_reply(message_json["content"])
 
@@ -79,7 +85,8 @@ response = client.chat.completions.create(
 
 message = response.choices[0].message.content
 message_dict = json.loads(message)
-
+print(f"Example 2: {type(message_dict)}")
+print(f"Example 2: {message_dict}")
 send_reply(message_dict["content"])
 
 
@@ -118,6 +125,9 @@ response = client.chat.completions.create(
 
 message = response.choices[0].message.content
 message_dict = json.loads(message)
+print(f"Example 3: {type(message_dict)}")
+print(f"Example 3: {message_dict}")
+
 print(message_dict.keys())  # dict_keys(['text', 'category'])
 print(message_dict["category"])  # banana
 send_reply(message_dict["content"])  # KeyError: 'content'
