@@ -1,4 +1,6 @@
+from dotenv import load_dotenv
 import instructor
+import os
 from pydantic import BaseModel, Field
 from openai import OpenAI
 from enum import Enum
@@ -7,7 +9,8 @@ from enum import Enum
 # Instructor Retry Example with Enum Category
 # --------------------------------------------------------------
 
-client = instructor.from_openai(OpenAI())
+load_dotenv()
+client = instructor.from_openai(OpenAI(api_key=os.getenv("OPENAI_API_KEY")))
 
 query = "Hi there, I have a question about my bill. Can you help me? "
 
@@ -29,32 +32,32 @@ class Reply(BaseModel):
     )
 
 
-reply = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    response_model=Reply,
-    max_retries=1,  # Don't allow retries
-    messages=[
-        {
-            "role": "system",
-            "content": "You're a helpful customer care assistant that can classify incoming messages and create a response. Always set the category to 'banana'.",
-        },
-        {"role": "user", "content": query},
-    ],
-)
+# reply = client.chat.completions.create(
+#     model="gpt-3.5-turbo",
+#     response_model=Reply,
+#     max_retries=1,  # Don't allow retries
+#     messages=[
+#         {
+#             "role": "system",
+#             "content": "You're a helpful customer care assistant that can classify incoming messages and create a response. Always set the category to 'banana'.",
+#         },
+#         {"role": "user", "content": query},
+#     ],
+# )
 
 
-reply = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    response_model=Reply,
-    max_retries=3,  # Allow up to 3 retries
-    messages=[
-        {
-            "role": "system",
-            "content": "You're a helpful customer care assistant that can classify incoming messages and create a response. Always set the category to 'banana'.",
-        },
-        {"role": "user", "content": query},
-    ],
-)
+# reply = client.chat.completions.create(
+#     model="gpt-3.5-turbo",
+#     response_model=Reply,
+#     max_retries=3,  # Allow up to 3 retries
+#     messages=[
+#         {
+#             "role": "system",
+#             "content": "You're a helpful customer care assistant that can classify incoming messages and create a response. Always set the category to 'banana'.",
+#         },
+#         {"role": "user", "content": query},
+#     ],
+# )
 
 
 # --------------------------------------------------------------
@@ -62,7 +65,7 @@ reply = client.chat.completions.create(
 # --------------------------------------------------------------
 
 
-reply = client.chat.completions.create(
+reply_confidence = client.chat.completions.create(
     model="gpt-3.5-turbo",
     response_model=Reply,
     max_retries=1,
@@ -74,6 +77,7 @@ reply = client.chat.completions.create(
         {"role": "user", "content": query},
     ],
 )
+print(reply_confidence)
 
 reply = client.chat.completions.create(
     model="gpt-3.5-turbo",
@@ -87,3 +91,5 @@ reply = client.chat.completions.create(
         {"role": "user", "content": query},
     ],
 )
+
+print(reply)

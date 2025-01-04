@@ -1,4 +1,7 @@
 import instructor
+import os
+
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from openai import OpenAI
 from pydantic import BeforeValidator
@@ -14,7 +17,8 @@ def send_reply(message: str):
 # Example of a prompt injection
 # --------------------------------------------------------------
 
-client = instructor.from_openai(OpenAI())
+load_dotenv()
+client = instructor.from_openai(OpenAI(api_key=os.getenv("OPENAI_API_KEY")))
 
 query = """
 Hi there, I have a question about my bill. Can you help me? 
@@ -40,7 +44,7 @@ reply = client.chat.completions.create(
         {"role": "user", "content": query},
     ],
 )
-
+print("Without security")
 send_reply(reply.content)
 
 # --------------------------------------------------------------
@@ -60,6 +64,8 @@ class ValidatedReply(BaseModel):
         ),
     ]
 
+
+print("\nWith security")
 
 try:
     reply = client.chat.completions.create(

@@ -1,4 +1,7 @@
 import instructor
+import os
+
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from openai import OpenAI
 from enum import Enum
@@ -9,7 +12,8 @@ from enum import Enum
 # --------------------------------------------------------------
 
 # Patch the OpenAI client
-client = instructor.from_openai(OpenAI())
+load_dotenv()
+client = instructor.from_openai(OpenAI(api_key=os.getenv("OPENAI_API_KEY")))
 
 
 class TicketCategory(str, Enum):
